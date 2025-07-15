@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
 import { Toaster } from "sonner";
+import { ThemeProvider } from "next-themes";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,12 +28,19 @@ export default function RootLayout({
   return (
   <TRPCReactProvider>
       
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            disableTransitionOnChange
+          >
+
         <Toaster/>
         {children}
+          </ThemeProvider>
       </body>
     </html>
   </TRPCReactProvider>
