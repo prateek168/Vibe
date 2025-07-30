@@ -30,7 +30,7 @@ const Page=()=>{
       <ProjectsList />
     </div>
   )
-  
+
 }
 
 export default Page
