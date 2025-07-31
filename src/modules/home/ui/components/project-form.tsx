@@ -14,6 +14,7 @@ import { useState } from "react"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { PROJECT_TEMPLATES } from "../../constants"
+import { useClerk } from "@clerk/nextjs"
 
 
 const formSchema = z.object({
@@ -29,6 +30,8 @@ export const ProjectForm = () =>{
     const querClient = useQueryClient();
     const [isFocused, setIsFocused] = useState(false);
     const trpc = useTRPC();
+    const clerk = useClerk();
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues:{
@@ -46,9 +49,10 @@ export const ProjectForm = () =>{
         },
 
         onError:(error)=>{
-
-            //todo redirect to pricing page if specific error
             toast.error(error.message)
+            if(error.data?.code === "UNAUTHORIZED")
+                clerk.openSignIn();
+            //todo redirect to pricing page if specific error
         }
     }))
     
