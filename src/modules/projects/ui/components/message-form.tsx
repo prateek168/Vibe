@@ -3,7 +3,7 @@ import {z} from 'zod'
 import { zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form" 
 import { ArrowUpIcon,Loader2Icon, X } from "lucide-react" 
-import{ useQueryClient, useMutation } from "@tanstack/react-query"
+import{ useQueryClient, useMutation, useQuery, QueryClient } from "@tanstack/react-query"
 
 
 import {cn} from "@/lib/utils"
@@ -12,6 +12,8 @@ import {Button } from "@/components/ui/button"
 import {Form , FormField} from "@/components/ui/form"
 import { useState } from "react"
 import { toast } from "sonner"
+import { Usage } from "@/modules/home/ui/components/usage"
+import { useRouter } from "next/navigation"
 
 interface Props {
     projectId : string
@@ -26,7 +28,8 @@ const formSchema = z.object({
 
 
 export const MessageForm = ({projectId } : Props) =>{
-    const querClient = useQueryClient();
+    const queryClient = useQueryClient();
+    const router = useRouter()
     const [isFocused, setIsFocused] = useState(false);
     const trpc = useTRPC();
     const form = useForm<z.infer<typeof formSchema>>({
@@ -35,19 +38,25 @@ export const MessageForm = ({projectId } : Props) =>{
             value:"",
         }
     })
+
+    const {data : usage } = useQuery(trpc.usage.status.queryOptions())
     
     const createMessage = useMutation(trpc.messages.create.mutationOptions(
         {onSuccess: (data)=>{
             form.reset()
-            querClient.invalidateQueries(
+            queryClient.invalidateQueries(
                 trpc.messages.getMany.queryOptions({projectId })
             )
-            // TODO : Invalidate usage status
+            queryClient.invalidateQueries(
+                trpc.usage.status.queryOptions()
+            )
         },
         onError:(error)=>{
 
-            //todo redirect to pricing page if specific error
             toast.error(error.message)
+            if(error.data?.code === "TOO_MANY_REQUESTS"){
+                    router.push("/pricing");
+            }
         }
     }))
     
@@ -59,11 +68,17 @@ export const MessageForm = ({projectId } : Props) =>{
     }
     
     const isPending = createMessage.isPending;
-    const showUsage = false; 
+    const showUsage = !!usage; 
     const isButtonDisabled = isPending || !form.formState.isValid
 
     return( 
         <Form {...form}>
+            {showUsage && (
+                <Usage 
+                    points={usage.remainingPoints}
+                    msBeforeNext={usage.msBeforeNext}
+                />
+            )}
             <form onSubmit={form.handleSubmit(onSubmit)}
             className={cn(
                 "relative border p-4 pt-1 rounded-xl bg-sidebar dark:bg-sidebar transition-all",

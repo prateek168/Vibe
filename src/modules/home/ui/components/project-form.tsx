@@ -15,6 +15,7 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { PROJECT_TEMPLATES } from "../../constants"
 import { useClerk } from "@clerk/nextjs"
+import { err } from "inngest/types"
 
 
 const formSchema = z.object({
@@ -27,7 +28,7 @@ const formSchema = z.object({
 
 export const ProjectForm = () =>{
     const router = useRouter()
-    const querClient = useQueryClient();
+    const queryClient = useQueryClient();
     const [isFocused, setIsFocused] = useState(false);
     const trpc = useTRPC();
     const clerk = useClerk();
@@ -41,9 +42,12 @@ export const ProjectForm = () =>{
     
     const  createProject = useMutation(trpc.projects.create.mutationOptions(
         {onSuccess: (data)=>{
-            querClient.invalidateQueries(
+            queryClient.invalidateQueries(
                 trpc.projects.getMany.queryOptions()
             );
+            queryClient.invalidateQueries(
+                trpc.usage.status.queryOptions()
+            )
             router.push(`/projects/${data.id}`);
             
         },
@@ -52,7 +56,9 @@ export const ProjectForm = () =>{
             toast.error(error.message)
             if(error.data?.code === "UNAUTHORIZED")
                 clerk.openSignIn();
-            //todo redirect to pricing page if specific error
+            if(error.data?.code==="TOO_MANY_REQUESTS"){
+                router.push("/pricing")
+            }
         }
     }))
     
