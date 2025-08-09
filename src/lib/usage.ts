@@ -15,7 +15,7 @@ export async function getUsageTracker(){
         storeClient: prisma,
         tableName:  "Usage",
         points: hasProAccess? PRO_POINTS : FREE_POINTS,
-        duration: 30 * 24 * 60 * 60
+        duration:DURATION
     })
     return usageTracker;
 }

@@ -2,7 +2,7 @@ import TextAreaAutosize  from "react-textarea-autosize"
 import {z} from 'zod'
 import { zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form" 
-import { ArrowUpIcon,Loader2Icon, X } from "lucide-react" 
+import { ArrowUpIcon,Loader2Icon} from "lucide-react" 
 import{ useQueryClient, useMutation } from "@tanstack/react-query"
 
 
@@ -15,7 +15,6 @@ import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 import { PROJECT_TEMPLATES } from "../../constants"
 import { useClerk } from "@clerk/nextjs"
-import { err } from "inngest/types"
 
 
 const formSchema = z.object({
@@ -77,7 +76,6 @@ export const ProjectForm = () =>{
     }
     
     const isPending = createProject.isPending;
-    const showUsage = false; 
     const isButtonDisabled = isPending || !form.formState.isValid
 
     return( 

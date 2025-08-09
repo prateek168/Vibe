@@ -2,8 +2,8 @@ import TextAreaAutosize  from "react-textarea-autosize"
 import {z} from 'zod'
 import { zodResolver} from "@hookform/resolvers/zod"
 import {useForm} from "react-hook-form" 
-import { ArrowUpIcon,Loader2Icon, X } from "lucide-react" 
-import{ useQueryClient, useMutation, useQuery, QueryClient } from "@tanstack/react-query"
+import { ArrowUpIcon,Loader2Icon } from "lucide-react" 
+import{ useQueryClient, useMutation, useQuery} from "@tanstack/react-query"
 
 
 import {cn} from "@/lib/utils"
@@ -42,7 +42,7 @@ export const MessageForm = ({projectId } : Props) =>{
     const {data : usage } = useQuery(trpc.usage.status.queryOptions())
     
     const createMessage = useMutation(trpc.messages.create.mutationOptions(
-        {onSuccess: (data)=>{
+        {onSuccess: ()=>{
             form.reset()
             queryClient.invalidateQueries(
                 trpc.messages.getMany.queryOptions({projectId })
