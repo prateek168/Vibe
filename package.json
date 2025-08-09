@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.28.0",
@@ -14,6 +15,7 @@
     "@e2b/code-interpreter": "^1.5.1",
     "@hookform/resolvers": "^5.1.1",
     "@inngest/agent-kit": "^0.9.0",
+    "@opentelemetry/winston-transport": "^0.14.0",
     "@prisma/client": "^6.11.1",
     "@radix-ui/react-accordion": "^1.2.11",
     "@radix-ui/react-alert-dialog": "^1.1.14",
@@ -52,6 +54,7 @@
     "clsx": "^2.1.1",
     "cmdk": "^1.1.1",
     "date-fns": "^4.1.0",
+    "drizzle-orm": "^0.44.4",
     "embla-carousel-react": "^8.6.0",
     "inngest": "^3.40.1",
     "input-otp": "^1.4.2",

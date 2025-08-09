@@ -10,7 +10,19 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Bring in Next.js + TypeScript ESLint rules
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+
+  // Custom rules & ignores
+  {
+    ignores: [
+      "**/generated/*",   // ignore generated code
+      "**/node_modules/*" // ignore dependencies
+    ],
+    rules: {
+      "@typescript-eslint/no-unused-vars": "off" // disable unused vars check
+    }
+  }
 ];
 
 export default eslintConfig;

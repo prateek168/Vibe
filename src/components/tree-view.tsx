@@ -2,7 +2,6 @@ import {  TreeItem } from "@/types";
 import{
     Sidebar,
     SidebarContent,
-    SidebarGroup,
     SidebarGroupContent,
     SidebarMenu,
     SidebarMenuButton,
@@ -11,7 +10,7 @@ import{
     SidebarProvider,
     SidebarRail
 } from "@/components/ui/sidebar"
-import { ChevronRightIcon, ChevronsRightLeftIcon, FileIcon, FolderIcon } from "lucide-react";
+import { ChevronRightIcon, FileIcon, FolderIcon } from "lucide-react";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@radix-ui/react-collapsible";
 
 interface TreeViewProps{

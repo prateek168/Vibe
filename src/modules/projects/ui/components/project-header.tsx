@@ -5,9 +5,7 @@ import { useSuspenseQuery } from "@tanstack/react-query"
 
 import {
     ChevronDownIcon,
-    EditIcon,
     SunMoonIcon,
-    ChevronLeftIcon
 }
 from "lucide-react"
 import { useTRPC } from "@/trpc/client"

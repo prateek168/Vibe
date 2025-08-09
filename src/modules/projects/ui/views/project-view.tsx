@@ -14,7 +14,6 @@ import { FragmentWeb } from "../components/fragment-web";
 import { CodeIcon, CrownIcon, EyeIcon } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { CodeView } from "@/components/code-view";
 import { FileExplorer } from "@/components/file-explorer";
 import { UserControl } from "@/components/user-control";
 import { useAuth } from "@clerk/nextjs";
