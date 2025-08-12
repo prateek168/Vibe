@@ -21,7 +21,7 @@ type CarouselProps = {
   setApi?: (api: CarouselApi) => void
 }
 
-type CarouselContextProps = {
+type CarouselContextProps = { 
   carouselRef: ReturnType<typeof useEmblaCarousel>[0]
   api: ReturnType<typeof useEmblaCarousel>[1]
   scrollPrev: () => void
